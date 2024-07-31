@@ -1,7 +1,8 @@
 // ✨ create your `quotesSlice` in this module
+import { createSlice } from '@reduxjs/toolkit'
 
 let id = 1
-const getNextId = () => id++
+export const getNextId = () => id++
 const initialState = {
   displayAllQuotes: true,
   highlightedQuote: null,
@@ -26,3 +27,46 @@ const initialState = {
     },
   ],
 }
+
+
+export const quotesSlice = createSlice({
+  name: 'quotes',
+  initialState,
+  reducers: {
+    toggleVisibility: (state, ) => {
+      state.displayAllQuotes = !state.displayAllQuotes 
+
+    },
+    deleteQoute: (state, action) => {
+      state.quotes = state.quotes.filter(quote => quote.id !== action.payload)
+
+    },
+    editQuoteAuthenticity: (state, action) => {
+     const qouteToEdit = state.quotes.find(quote => quote.id === action.payload)
+     qouteToEdit.apocryphal = !qouteToEdit.apocryphal
+
+    },
+    setHighlightedQuote: (state, action) => {
+      if (state.highlightedQuote === action.payload) {
+        state.highlightedQuote = null
+
+    }else {
+      state.highlightedQuote = action.payload
+    }
+    },
+    createQuote: (state, action) => {
+      state.quotes.push(action.payload)
+
+    },
+  },
+})
+
+export const{
+  toggleVisibility,
+  deleteQoute,
+  editQuoteAuthenticity,
+  setHighlightedQuote,
+  createQuote
+} = quotesSlice.actions 
+
+export default quotesSlice.reducer
